@@ -1,0 +1,146 @@
+@import url('https://fonts.googleapis.com/css2?family=Ubuntu&display=swap');
+* {
+    margin: 0;
+    padding: 0;
+    font-family: 'Ubuntu', sans-serif;
+}
+body {
+    background-color: #241e67;
+}
+#cabecera {
+    padding: 10px;
+    background-color: darkorchid;
+    color: #fff;
+}
+#cabecera > div > h1 {
+    text-align: center;
+}
+.bi-safe2-fill {
+    color: #000;
+    font-size: 60px;
+}
+#cabecera > div > h2 {
+    font-size: 22px;
+}
+#navegacion {
+    background-color: rgb(104, 94, 169);
+    height: 40px;
+}
+#navegacion > div > ul > li {
+    display: inline-block;
+    padding-top: 10px;
+}
+#navegacion > div > ul > li > a {
+    padding: 7px;
+    height: 30px;
+    text-align: center;
+    align-items: center;
+    text-decoration: none;
+    color: #000;
+}
+.link:hover {
+    background-color: rgb(186, 70, 93);
+}
+section {
+    display: inline-block;
+}
+#dos {
+    display: block;
+    float: right; 
+}
+#uno { 
+    margin: 7px;
+    padding: 10px;
+    width: 70%;
+    min-height: 420px;
+    background-color: lightskyblue;
+}
+#uno > article {
+    margin-top: 35px;
+    padding: 5px;
+    height: 110px;
+    background-color: darkgoldenrod;
+}
+#uno > article > h1 {
+    padding-top: 35px;
+    text-align: center;
+}
+#uno > article > p {
+    font-size: 18px;
+}
+#dos {
+    margin: 7px;
+    padding: 10px;
+    width: 23%;
+    min-height: 420px;
+    background-color: rgb(46, 164, 237);
+}
+.contenedor {
+    background-color: #434758;
+    margin: 5px;
+    padding: 15px;
+    border-radius: 5px;
+    font-size: 14px;
+    margin-bottom: 20px;
+}
+.contenedor > div > p {
+    display: inline-block;
+}
+.hora {
+    background-color: #292d3e;
+    display: flex;
+    justify-content: center;
+    color: #A77AC4;
+}
+#so {
+    margin-left: 15px;
+}
+.fecha {
+    margin-top: 5px;
+    background-color: #292d3e;
+    display: flex;
+    justify-content: center;
+    color: #ff5555;
+}
+#dia, #mes, #year {
+    margin-left: 8px;
+    margin-right: 5px;
+}
+#barra_info {    
+    margin: 7px;
+    padding: 5px;
+    width: auto;
+    background-color: rgba(255, 255, 255, 0.5);
+}
+#titulo {
+    display: block;
+    font-size: 18px;
+    text-align: center;
+}
+#link, #redes {
+    display: inline-block;
+    width: 49%;
+    text-align: center;
+}
+#link > p {
+    display: inline-block;
+    margin: 5px;
+}
+#link > p > a {
+    color: #fff;
+    text-decoration: none;
+}
+#redes > p > a { 
+    color: crimson;
+    text-decoration: none;
+}
+#derechos {
+    display: block;
+    text-align: center;
+}
+
+.deposito {
+    margin: 7px;
+    padding: 10px;
+    background-color: #ff5555;
+}

@@ -1,0 +1,113 @@
+@import url('https://fonts.googleapis.com/css2?family=Ubuntu&display=swap');
+* {
+    margin: 0;
+    padding: 0;
+    font-family: 'Ubuntu', sans-serif;
+}
+body {
+    background-color: #241e67;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+div {
+    margin: 10px;
+    padding: 20px;
+    background-color: #d7d5d7;
+    width: 500px;
+    border: 1px solid #7e7e7e;
+    border-radius: 10px;
+    box-shadow: rgb(122, 87, 137) 3px 2px 5px;
+    text-align: center;
+}
+.bi-safe2-fill {
+    margin: 5px;
+    padding: 5px;
+    font-size: 60px;
+}
+div h2 {
+    margin: 7px;
+    padding: 10px;
+    color: rgb(52, 118, 198);
+}
+a {
+    display: inline-block;
+    margin: 7px;
+    padding: 10px;
+    background-color: slateblue;
+    width: 42%;
+    color: #000;
+    text-decoration: none;
+}
+a:hover {
+    background-color: #197292;
+}
+
+/*registro.php*/
+.bi-person-plus-fill, .bi-door-open-fill, .bi-lock-fill {
+    margin: 5px;
+    padding: 5px;
+    font-size: 40px;
+    color: #000;
+}
+#contre {
+    position: absolute;
+    z-index: 1;
+}
+.input, .label {
+    display: block;
+    margin-top: 20px;
+    padding: 5px;
+    width: 98%;
+    height: 20px;
+}
+.label {
+    position: absolute;
+    margin-top: -38px;
+    z-index: -2;
+    text-align: left;
+}
+.input {
+    margin-top: 20px;
+    height: 30px;
+    border: none;
+    border-bottom: 2px solid #2b3565;
+    background-color: transparent;
+    z-index: 3;
+    font-size: 16px;
+    outline: none;
+}
+.input:focus + .label {
+    margin-top: -58px;
+    color: darkmagenta;
+}
+#boton {
+    margin-top: 20px;
+    width: 98%;
+    height: 40px;
+    background-color: #241e67;
+    border: none;
+    cursor: pointer;
+    color: #fff;
+    font-size: 16px;
+}
+#boton:hover {
+    background-color: #197292;
+}
+p {
+    text-align: left;
+    margin: 0;
+    padding: 0;
+    height: 30px;
+}
+#link {
+    background: transparent;
+    margin-top: 5px;
+    text-align: left;
+    color: rgb(239, 63, 233);
+}
+.fijar {
+    margin-top: -58px;
+    color: darkmagenta;
+}
