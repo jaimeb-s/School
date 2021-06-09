@@ -9,40 +9,69 @@ $hora = date("H") . ":" . date("i") . ":" . date("s");
 
 if (isset($_POST['depo'])) {
     try {
-        
+
         $consulta = $conexion->prepare('SELECT * FROM cuentas WHERE cuenta=:dato');
         $consulta->execute(array(':dato' => $_POST['beneficiario']));
 
         $resultados = $consulta->fetchAll();
         if (isset($resultados)) {
             foreach ($resultados as $beni) {
-                $cuenta_beni = $beni['cuenta'];
                 $nombre_beni = $beni['nombre'];
                 $ape_beni = $beni['apellidos'];
                 $monto = $beni['monto'];
             }
-            $nuevo_mon = $monto + $_POST['montodeposito'];
+            if ($_POST['montodeposito'] > $_SESSION['monto']) {
+                echo "La cantidad de deposito rebasa la cantidad de tu cuenta";
+            } else {
+                // Actualizar a la cuenta de transferencia
+                $nuevo_mon = $monto + $_POST['montodeposito'];
 
-            $consulta = $conexion->prepare('UPDATE cuentas SET monto=:nuevomonto WHERE cuenta=:cuenta;)');
+                $consulta = $conexion->prepare('UPDATE cuentas SET monto=:nuevomonto WHERE cuenta=:cuenta;)');
 
-            $consulta->bindParam(':nuevomonto', $nuevo_mon);
-            $consulta->bindParam(':cuenta', $_POST['beneficiario']);
-            $consulta->execute();
+                $consulta->bindParam(':nuevomonto', $nuevo_mon);
+                $consulta->bindParam(':cuenta', $_POST['beneficiario']);
+                $consulta->execute();
 
-            $consulta = $conexion->prepare('INSERT INTO movimientos (
-                id_movimiento, cuenta, monto, operacion, fecha, hora)
-                VALUES (null, :cuenta, :monto, "Deposito a cuenta", :fecha, :hora)');
+                // Tabla movimientos
+                $consulta = $conexion->prepare('INSERT INTO movimientos (
+                    id_movimiento, cuenta, monto, operacion, fecha, hora) VALUES 
+                    (null, :cuenta, :monto, "Deposito a cuenta", :fecha, :hora)');
+                $consulta->bindParam(':cuenta', $_POST['beneficiario']);
+                $consulta->bindParam(':monto', $_POST['montodeposito']);
+                $consulta->bindParam(':fecha', $diahoy);
+                $consulta->bindParam(':hora', $hora);
+                $consulta->execute();
 
-            $consulta->bindParam(':cuenta', $cuenta_beni);
-            $consulta->bindParam(':monto', $_POST['montodeposito']);
-            //$consulta->bindParam(':operacion', "retiro");
-            $consulta->bindParam(':fecha', $diahoy);
-            $consulta->bindParam(':hora', $hora);
-            $consulta->execute();
+                $consulta = $conexion->prepare('SELECT * FROM cuentas WHERE cuenta=:cuenta');
+                $consulta->bindParam(':cuenta', $_SESSION['cuenta']);
+                $consulta->execute();
 
-            echo "El deposito de " . $_POST['montodeposito'] . " fue entregado exitosamente a " . $nombre_beni . " " . $ape_beni;
+                $resultados = $consulta->fetchAll();
+                foreach ($resultados as $key) {
+                    $montoanterior = $key['monto'];
+                }
+
+                $nue_mon = $montoanterior - $_POST['montodeposito'];
+                // Actualizar a la cuenta que realiza la transferencia
+                $consulta = $conexion->prepare('UPDATE cuentas SET monto=:nuevomonto WHERE cuenta=:cuenta;)');
+                $consulta->bindParam(':nuevomonto', $nue_mon);
+                $consulta->bindParam(':cuenta', $_SESSION['cuenta']);
+                $consulta->execute();
+
+                // Tabla movimientos
+                $consulta = $conexion->prepare('INSERT INTO movimientos (
+                    id_movimiento, cuenta, monto, operacion, fecha, hora) VALUES (
+                    null, :cuenta, :monto, "Transferecia a otra cuenta", :fecha, :hora)');
+                $consulta->bindParam(':cuenta', $_SESSION['cuenta']);
+                $consulta->bindParam(':monto', $_POST['montodeposito']);
+                $consulta->bindParam(':fecha', $diahoy);
+                $consulta->bindParam(':hora', $hora);
+                $consulta->execute();
+
+                echo "El deposito de " . $_POST['montodeposito'] . " fue entregado exitosamente a ". $nombre_beni . " " . $ape_beni;
+            }   
         } else {
-            echo "Error, el usuario al que desea depositar no existe";
+            echo "El usuario al que desea depositar no existe";
         }
     } catch (PDOException $th) {
         echo "Error: " . $th->getMessage();
@@ -56,7 +85,7 @@ if (isset($_POST['depo'])) {
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
-    <title>Depositos</title>
+    <title>Transferencia</title>
     <link rel="stylesheet" href="../css/principal.css">
 </head>
 <body>

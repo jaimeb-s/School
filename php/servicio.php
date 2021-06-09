@@ -7,56 +7,66 @@ session_start();
 $diahoy = date("Y") . "-" . date("m") . "-" . date("d");
 $hora = date("H") . ":" . date("i") . ":" . date("s");
 
-if (isset($_POST['depo'])) {
+if (isset($_POST['servi'])) {
     try {
-        
-        $consulta = $conexion->prepare('SELECT * FROM cuentas WHERE cuenta=:dato');
-        $consulta->execute(array(':dato' => $_POST['beneficiario']));
 
-        $resultados = $consulta->fetchAll();
-        if (isset($resultados)) {
-            foreach ($resultados as $beni) {
-                $cuenta_beni = $beni['cuenta'];
-                $nombre_beni = $beni['nombre'];
-                $ape_beni = $beni['apellidos'];
-                $monto = $beni['monto'];
-            }
-            $nuevo_mon = $monto + $_POST['montodeposito'];
-
-            $consulta = $conexion->prepare('UPDATE cuentas SET monto=:nuevomonto WHERE cuenta=:cuenta;)');
-
-            $consulta->bindParam(':nuevomonto', $nuevo_mon);
-            $consulta->bindParam(':cuenta', $_POST['beneficiario']);
-            $consulta->execute();
-
-            $consulta = $conexion->prepare('INSERT INTO movimientos (
-                id_movimiento, cuenta, monto, operacion, fecha, hora)
-                VALUES (null, :cuenta, :monto, "Deposito a cuenta", :fecha, :hora)');
-
-            $consulta->bindParam(':cuenta', $cuenta_beni);
-            $consulta->bindParam(':monto', $_POST['montodeposito']);
-            //$consulta->bindParam(':operacion', "retiro");
+        if ($_POST['montoservicio'] > $_SESSION['monto']) {
+            echo "No tiene suficiente dinero para pagar";
+        } else {
+            // Insertar en la tabla servicos
+            $consulta = $conexion->prepare('INSERT INTO servicios (
+                id, cuenta, servicio, monto, fecha, hora) VALUES (
+                null, :cuenta, :servicio, :monto, :fecha, :hora)');
+            $consulta->bindParam(':cuenta', $_SESSION['cuenta']);
+            $consulta->bindParam(':servicio', $_POST['servicio']);
+            $consulta->bindParam(':monto', $_POST['montoservicio']);
             $consulta->bindParam(':fecha', $diahoy);
             $consulta->bindParam(':hora', $hora);
             $consulta->execute();
 
-            echo "El deposito de " . $_POST['montodeposito'] . " fue entregado exitosamente a " . $nombre_beni . " " . $ape_beni;
-        } else {
-            echo "Error, el usuario al que desea depositar no existe";
+            // Tabla movimientos
+            $consulta = $conexion->prepare('INSERT INTO movimientos (
+                id_movimiento, cuenta, monto, operacion, fecha, hora) VALUES
+                (null, :cuenta, :monto, "Pago de servicio", :fecha, :hora)');
+            $consulta->bindParam(':cuenta', $_SESSION['cuenta']);
+            $consulta->bindParam(':monto', $_POST['montoservicio']);
+            $consulta->bindParam(':fecha', $diahoy);
+            $consulta->bindParam(':hora', $hora);
+            $consulta->execute(); 
+
+            $consulta = $conexion->prepare('SELECT * FROM cuentas WHERE cuenta=:cuenta');
+            $consulta->bindParam(':cuenta', $_SESSION['cuenta']);
+            $consulta->execute();
+
+            $resultados = $consulta->fetchAll();
+            foreach ($resultados as $key) {
+                $montoanterior = $key['monto'];
+            }
+
+            $nue_mon = $montoanterior - $_POST['montoservicio'];
+            // Actualizar la cuenta que pago el servicio
+            $consulta = $conexion->prepare('UPDATE cuentas SET monto=:nuevomonto WHERE cuenta=:cuenta;)');
+            $consulta->bindParam(':nuevomonto', $nue_mon);
+            $consulta->bindParam(':cuenta', $_SESSION['cuenta']);
+            $consulta->execute();
+
+            echo "El pago de su servicio de " . $_POST['servicio'] . " fue realizado exitodamente";
         }
     } catch (PDOException $th) {
         echo "Error: " . $th->getMessage();
     }
 }
 
+
+
 ?>
 
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
-    <title>Depositos</title>
+    <title>Servicios</title>
     <link rel="stylesheet" href="../css/principal.css">
 </head>
 <body>
@@ -82,16 +92,16 @@ if (isset($_POST['depo'])) {
     </nav>
     <section class="deposito">
         <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post">
-            <label for="">Cuenta del beneficiario</label>
-            <input type="text" name="beneficiario" id="">
+            <h2>Servicio a pagar</h2>
+            <label for="">Nombre del servicio</label>
+            <input type="text" name="servicio" id="">
             <br>
-            <label for="">Monto de deposito</label>
-            <input type="text" name="montodeposito" id="">
+            <label for="">Monto a pagar</label>
+            <input type="text" name="montoservicio" id="">
             <br>
-            <input type="submit" value="Realizar deposito" name="depo">
+            <input type="submit" value="Pagar servicio" name="servi">
         </form>
     </section>
-    
     <footer id="barra_info">
         <div>
             <section id="titulo">

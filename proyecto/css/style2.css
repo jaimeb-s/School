@@ -1,0 +1,157 @@
+@import url('https://fonts.googleapis.com/css2?family=Ubuntu&display=swap');
+* {
+    margin: 0;
+    padding: 0;
+    font-family: 'Ubuntu', sans-serif;
+}
+body {
+    background-color: #4c4;
+}
+header {
+    padding: 10px;
+    background-color: #9e4fc5;
+    
+}
+header > div > h1 {
+    text-align: center;
+}
+.salir {
+    margin-top: -35px;
+    padding: 3px;
+    width: 50px;
+    height: 25px;
+    text-align: center;
+    background-color: rgb(233, 94, 94);
+    float: right;
+    text-decoration: none;
+    color: #fff;
+}
+.salir:hover {
+    background-color: rgb(185, 31, 31);
+}
+
+#contenedor {
+    display: flex;
+}
+#contenedor > nav {
+    background-color: rgb(104, 94, 169);
+    margin: 5px;
+}
+#contenedor > nav > div > ul > li {
+    margin-top: 10px;
+}
+#contenedor > nav > div > ul > li > a {
+    padding: 7px;
+    text-decoration: none;
+    color: #000;
+}
+.link:hover {
+    background-color: rgb(186, 70, 93);
+}
+#seccion1 {
+    margin: 5px;
+    background-color: rgb(164, 128, 231);
+}
+#info {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 67vh;
+    min-width: 140vh;
+}
+#info > div {
+    display: block;
+    margin: 5px;
+    padding: 9px;
+}
+#info > div > h2 {
+    margin: 15px;
+    height: 50px;
+    padding: auto;
+    text-align: center;
+}
+#seccion2 {
+    margin: 5px; 
+    padding: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background-color: rgb(124, 118, 163);
+}
+#seccion2 > div > i {
+    text-align: center;
+    font-size: 38px;
+}
+footer {
+    margin: 7px;
+    padding: 5px;
+    background-color: rgb(255, 255, 255, 0.5);
+}
+footer > div > section > h1 {
+    text-align: center;
+}
+#link, #redes {
+    display: inline-block;
+    width: 49%;
+    text-align: center;
+}
+#link > p {
+    display: inline-block;
+    margin: 5px;
+}
+#link > p > a {
+    color: #fff;
+    text-decoration: none;
+}
+#redes > p > a {
+    color: crimson;
+    text-decoration: none;
+}
+#derechos {
+    text-align: center;
+}
+
+
+#formulario {
+    background-color: slategray;
+    height: 150px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 67vh;
+    min-width: 140vh;
+}
+form > h2 {
+    margin: 8px;
+    text-align: center;
+}
+label, input {
+    display: block;
+}
+label {
+    margin-top: 10px;
+}
+input {
+    background-color: transparent;
+    border: none;
+    border-bottom: 2px solid #fff;
+    outline: none;
+    padding: 10px;
+}
+input[type=submit] {
+    margin: 8px;
+    margin-top: 10px;
+    width: 90%;
+    border: 0px solid #000;
+    background-color: #9e4fc5;
+    color: #fff;
+    cursor: pointer;
+}
+input[type=submit]:hover {
+    background-color: rgb(96, 64, 126);
+}
+.mensaje {
+    margin: 8px;
+    text-align: center;
+}
